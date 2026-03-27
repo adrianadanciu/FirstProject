@@ -12,8 +12,8 @@
   <line>Command: /home/adriana/Downloads/project-data-main-gigiquant/gigiquant/test /home/adriana/Downloads/project-data-main-gigiquant/gigiquant/in/data20.in /home/adriana/Downloads/project-data-main-gigiquant/gigiquant/out/data20.out</line>
 </preamble>
 
-<pid>26215</pid>
-<ppid>26177</ppid>
+<pid>26387</pid>
+<ppid>26341</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -32,13 +32,13 @@
 
 <status>
   <state>RUNNING</state>
-  <time>00:00:00:00.184 </time>
+  <time>00:00:00:00.095 </time>
 </status>
 
 
 <status>
   <state>FINISHED</state>
-  <time>00:00:00:01.323 </time>
+  <time>00:00:00:01.535 </time>
 </status>
 
 <errorcounts>

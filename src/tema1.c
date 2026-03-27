@@ -26,6 +26,8 @@ int main(const int argc, const char *argv[]){
     fscanf(in, "%lf", &val);
     p = (N*) malloc(sizeof(N));
     if(p == NULL){
+        fclose(in);
+        fclose(out);
         return 1;
     }
     p->valoare = val;
@@ -37,6 +39,8 @@ int main(const int argc, const char *argv[]){
         fscanf(in, "%lf", &val);
         p = (N*) malloc(sizeof(N));
         if(p == NULL){
+            fclose(in);
+            fclose(out);
             return 1;
         }
         p->valoare = val;
