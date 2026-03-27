@@ -27,12 +27,12 @@ int main(int argc, char *argv[]){
         fscanf(in, "%lf", &val);
         p = (N*) malloc(sizeof(N));
         p->valoare = val;
-        p->randament = (p->valoare - q->valoare) / p->valoare;
+        p->randament = (p->valoare - q->valoare) / q->valoare;
         s += p->randament;
         q->next = p;
         q = p;
     }
-    double rmediu = s / n;
+    double rmediu = s / (n - 1);
     fprintf(out, "%.3lf\n", (int)(rmediu * 1000.0) / 1000.0);
     
     double svol = 0;
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]){
         svol += (p->randament - rmediu) * (p->randament - rmediu);
         p = p->next;
     }
-    double vol = sqrtl(svol / n);
+    double vol = sqrtl(svol / (n - 1));
     fprintf(out, "%.3lf\n", (int)(vol * 1000.0) / 1000.0);
     
     double ratio = rmediu / vol;
