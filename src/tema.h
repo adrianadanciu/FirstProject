@@ -10,7 +10,7 @@ struct Node{
 
 typedef struct Node N;
 
-void createList(FILE *in, FILE *out, N *cap, double val);
+void createList(N **cap, N **q, double val);
 double average(N *cap, int n);
-double volatility(N *cap, int rmediu, int n);
+double volatility(N *cap, double rmediu, int n);
 void freeList(N *cap);

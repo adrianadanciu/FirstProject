@@ -11,11 +11,14 @@ int main(const int argc, const char *argv[]){
     }
     int n = 0;
     double val = 0.0;
-    N *cap = NULL;
+    N *cap = NULL, *q = NULL;
     fscanf(in, "%d", &n);
     for(int i = 0; i < n; i++){
         fscanf(in, "%lf", &val);
-        createList(in, out, cap, val);
+        createList(&cap, &q, val);
+    }
+    if(cap == NULL) {
+        return 1;
     }
     double rmediu = average(cap, n);
     fprintf(out, "%.3lf\n", (int)(rmediu * 1000.0) / 1000.0);

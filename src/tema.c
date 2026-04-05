@@ -1,25 +1,22 @@
 #include "tema.h"
 
-void createList(FILE *in, FILE *out, N **cap, double val){
-    N *p = NULL, *q = NULL;
+void createList(N **cap, N **q, double val){
+    N *p = NULL;
     p = (N*) malloc(sizeof(N));
     if(p == NULL){
-        fclose(in);
-        fclose(out);
-        return 1;
+        return;
     }
     p->valoare = val;
     p->next = NULL;
-    if(cap == NULL){
-        cap = p;
+    if(*cap == NULL){
+        *cap = p;
         p->randament = 0;
     }
     else{
-        q->next = p;
-        p->randament = (p->valoare - q->valoare) / q->valoare;
+        (*q)->next = p;
+        p->randament = (p->valoare - (*q)->valoare) / (*q)->valoare;
     }
-    q->next = p;
-    q = p;
+    *q = p;
 }
 
 double average(N *cap, int n){
@@ -32,7 +29,7 @@ double average(N *cap, int n){
     return s / (n - 1);
 }
 
-double volatility(N *cap, int rmediu, int n){
+double volatility(N *cap, double rmediu, int n){
     double svol = 0;
     N *p = cap->next;
     while(p != NULL){
