@@ -1,6 +1,6 @@
 #include "tema.h"
 
-void createList(FILE *in, FILE *out, N *cap, double val){
+void createList(FILE *in, FILE *out, N **cap, double val){
     N *p = NULL, *q = NULL;
     p = (N*) malloc(sizeof(N));
     if(p == NULL){
