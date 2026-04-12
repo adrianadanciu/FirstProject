@@ -52,3 +52,6 @@ static int isEmptyQ(const Queue *q);
 void printQueue(Queue *q, FILE *out);
 
 void deleteStack(S** top);
+
+void rezolva_interviu1(FILE *in, FILE *out);
+void rezolva_interviu2(FILE *in, FILE *out);

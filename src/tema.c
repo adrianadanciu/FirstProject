@@ -133,3 +133,80 @@ void deleteStack(S** top){
         free(temp);
     }
 }
+
+void rezolva_interviu1(FILE *in, FILE *out){
+    int n = 0;
+    double val = 0.0;
+    N *cap = NULL, *q = NULL;
+    fscanf(in, "%d", &n);
+    for(int i = 0; i < n; i++){
+        fscanf(in, "%lf", &val);
+        createList(&cap, &q, val);
+    }
+    if(cap == NULL) {
+        return;
+    }
+    double rmediu = average(cap, n);
+    fprintf(out, "%.3lf\n", (int)(rmediu * 1000.0) / 1000.0);
+    
+    double vol = volatility(cap, rmediu, n);
+    fprintf(out, "%.3lf\n", (int)(vol * 1000.0) / 1000.0);
+    
+    double ratio = rmediu / vol;
+    fprintf(out, "%.3lf\n", (int)(ratio * 1000.0) / 1000.0);
+
+    freeList(cap);
+}
+
+void rezolva_interviu2(FILE *in, FILE *out){
+    S *stacktop1 = NULL, *stacktop2 = NULL, *stacktop3 = NULL;
+    char s[256], s1[256] = "", s2[256] = "", s3[256] = "";
+    int i = 0;
+    Queue *q = createQueue();
+    while(fgets(s, 256, in)){
+        s[strcspn(s, "\r\n")] = 0;
+        if(isalpha(s[0])){
+            i++;
+            if(i == 1)
+                strcpy(s1, s);
+            if(i == 2)
+                strcpy(s2, s);
+            if(i == 3)
+                strcpy(s3, s);
+        }
+        else{
+            double nr = atof(s);
+            if(i == 1){
+                push(&stacktop1, nr);
+            }
+            if(i == 2){
+                push(&stacktop2, nr);
+            }
+            if(i == 3){
+                push(&stacktop3, nr);
+            }
+        }
+    }
+    i = 0; //ziua
+    while(!isEmptyS(stacktop1) && !isEmptyS(stacktop2) && !isEmptyS(stacktop3)){
+        i++;
+        double val1 = pop(&stacktop1), val2 = pop(&stacktop2), val3 = pop(&stacktop3);
+        char rasp[256] = "ziua ";
+        if(val1 == val2 && val1 != val3){
+            createString(val1, val2, val3, rasp, i, s3);
+            enQueue(q, rasp);
+        }
+        if(val2 == val3 && val2 != val1){
+            createString(val2, val3, val1, rasp, i, s1);
+            enQueue(q, rasp);
+        }
+        if(val1 == val3 && val1 != val2){
+            createString(val1, val3, val2, rasp, i, s2);
+            enQueue(q, rasp);
+        }
+    }
+    printQueue(q, out);
+    deleteStack(&stacktop1);
+    deleteStack(&stacktop2);
+    deleteStack(&stacktop3);
+}
