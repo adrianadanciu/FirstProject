@@ -47,3 +47,89 @@ void freeList(N *cap){
         free(temp);
     } 
 }
+
+
+void push(S** top, double v){
+    S* newNode = (S*)malloc(sizeof(S));
+    if(newNode == NULL)
+        return;
+    newNode->val = v;
+    newNode->next = *top;
+    *top = newNode;
+}
+
+int isEmptyS(const S *top){
+    return top == NULL;
+}
+
+double pop(S** top){
+    if(isEmptyS(*top))
+        return INT_MIN;
+    S *temp = *top;
+    double aux = temp->val;
+    *top = (*top)->next;
+    free(temp);
+    return aux;
+}
+
+Queue *createQueue(){
+    Queue *q;
+    q = (Queue *)malloc(sizeof(Queue));
+    if(q == NULL){
+        return NULL;
+    }
+    q->front = q->rear = NULL;
+    return q;
+}
+
+void enQueue(Queue *q, const char v[]){
+    NQ* newNode = (NQ*) malloc(sizeof(NQ));
+    if(newNode == NULL)
+        return;
+    strcpy(newNode->s, v);
+    newNode->next = NULL;
+    if(q->rear == NULL)
+        q->rear = newNode;
+    else{
+        q->rear->next = newNode;
+        q->rear = newNode;
+    }
+    if(q->front == NULL)
+        q->front = q->rear;
+}
+
+void createString(double val1, double val2, double val3, char s[], int i, const char s3[]){
+    char aux[20];
+    sprintf(aux, "%d", i);
+    strcat(s, aux);
+    strcat(s, " - ");
+    double dif = fabs(val3 - val1);
+    char sdif[256];
+    sprintf(sdif, "%.2lf", dif);
+    strcat(s, sdif);
+    strcat(s, " - ");
+    strcat(s, s3);
+}
+
+static int isEmptyQ(const Queue *q){
+    return q->front == NULL;
+}
+
+void printQueue(Queue *q, FILE *out){
+    NQ *aux = NULL;
+    while(!isEmptyQ(q)){
+        aux = q->front;
+        fprintf(out, "%s\n", aux->s);
+        q->front = q->front->next;
+        free(aux);
+    }
+    free(q);
+}
+
+void deleteStack(S** top){
+    while(*top != NULL){
+        S* temp = *top;
+        *top = (*top)->next;
+        free(temp);
+    }
+}
