@@ -1,6 +1,6 @@
 #include "tema.h"
 
-void createList(N **cap, N **q, double val){
+static void createList(N **cap, N **q, double val){
     N *p = NULL;
     p = (N*) malloc(sizeof(N));
     if(p == NULL){
@@ -19,7 +19,7 @@ void createList(N **cap, N **q, double val){
     *q = p;
 }
 
-double average(N *cap, int n){
+static double average(N *cap, int n){
     N *p = cap->next;
     double s = 0.0;
     while(p != NULL){
@@ -29,7 +29,7 @@ double average(N *cap, int n){
     return s / (n - 1);
 }
 
-double volatility(N *cap, double rmediu, int n){
+static double volatility(N *cap, double rmediu, int n){
     double svol = 0;
     N *p = cap->next;
     while(p != NULL){
@@ -39,7 +39,7 @@ double volatility(N *cap, double rmediu, int n){
     return sqrt(svol / (n - 1));
 }
 
-void freeList(N *cap){
+static void freeList(N *cap){
     N *p = cap;
     while(p != NULL){
         N *temp = p;
@@ -49,7 +49,7 @@ void freeList(N *cap){
 }
 
 
-void push(S** top, double v){
+static void push(S** top, double v){
     S* newNode = (S*)malloc(sizeof(S));
     if(newNode == NULL)
         return;
@@ -58,11 +58,11 @@ void push(S** top, double v){
     *top = newNode;
 }
 
-int isEmptyS(const S *top){
+static int isEmptyS(const S *top){
     return top == NULL;
 }
 
-double pop(S** top){
+static double pop(S** top){
     if(isEmptyS(*top))
         return INT_MIN;
     S *temp = *top;
@@ -72,7 +72,7 @@ double pop(S** top){
     return aux;
 }
 
-Queue *createQueue(){
+static Queue *createQueue(){
     Queue *q;
     q = (Queue *)malloc(sizeof(Queue));
     if(q == NULL){
@@ -82,7 +82,7 @@ Queue *createQueue(){
     return q;
 }
 
-void enQueue(Queue *q, const char v[]){
+static void enQueue(Queue *q, const char v[]){
     NQ* newNode = (NQ*) malloc(sizeof(NQ));
     if(newNode == NULL)
         return;
@@ -98,7 +98,7 @@ void enQueue(Queue *q, const char v[]){
         q->front = q->rear;
 }
 
-void createString(double val1, double val2, double val3, char s[], int i, const char s3[]){
+static void createString(double val1, double val2, double val3, char s[], int i, const char s3[]){
     char aux[20];
     sprintf(aux, "%d", i);
     strcat(s, aux);
@@ -115,7 +115,7 @@ static int isEmptyQ(const Queue *q){
     return q->front == NULL;
 }
 
-void printQueue(Queue *q, FILE *out){
+static void printQueue(Queue *q, FILE *out){
     NQ *aux = NULL;
     while(!isEmptyQ(q)){
         aux = q->front;
@@ -126,12 +126,67 @@ void printQueue(Queue *q, FILE *out){
     free(q);
 }
 
-void deleteStack(S** top){
+static void deleteStack(S** top){
     while(*top != NULL){
         S* temp = *top;
         *top = (*top)->next;
         free(temp);
     }
+}
+
+static TreeNode* createNode(int depth){
+    TreeNode* newNode = (TreeNode*) malloc(sizeof(TreeNode));
+    if(newNode == NULL)
+        return NULL;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    newNode->depth = depth;
+    newNode->stocks = NULL;
+    return newNode;
+}
+
+static void addStock(TreeNode *root, const char *symbol){
+    StockList *node = (StockList*) malloc(sizeof(StockList));
+    if(node == NULL)
+        return;
+    strcpy(node->symbol, symbol);
+    node->next = NULL;
+    if(root->stocks == NULL){
+        root->stocks = node;
+    }
+    else{
+        StockList *p = root->stocks;
+        while(p->next != NULL){
+            p = p->next;
+        }
+        p->next = node;
+    }
+}
+
+static int getIndex(int nr, const char symbols[][MAX_SYM], const char *target){
+    for(int i = 0; i < nr; i++){
+        if(strcmp(symbols[i], target) == 0)
+            return i;
+    }
+    return -1;
+}
+
+static void freeStockList(StockList *head){
+    StockList *p = head;
+    while(p != NULL){
+        StockList *aux = p;
+        p = p->next;
+        free(aux);
+    }
+}
+
+static void freeTreeNode(TreeNode *root){
+    if(root == NULL)
+        return;
+    freeTreeNode(root->left);
+    freeTreeNode(root->right);
+    freeStockList(root->stocks);
+    free(root);
 }
 
 void rezolva_interviu1(FILE *in, FILE *out){
@@ -209,4 +264,79 @@ void rezolva_interviu2(FILE *in, FILE *out){
     deleteStack(&stacktop1);
     deleteStack(&stacktop2);
     deleteStack(&stacktop3);
+}
+
+void rezolva_interviu3(FILE *in, FILE *out){
+    char line[1024], symbols[100][MAX_SYM];
+    int nr = 0, days = 0;
+    double prices[500][100];
+    if(fgets(line, 1024, in)){
+        //fprintf(out, "%s\n", line);
+        const char *p = strtok(line, ",\n\r");
+        while(p != NULL){
+            strcpy(symbols[nr++], p);
+            p = strtok(NULL, ",\n\r");
+        }
+    }
+    while(fgets(line, 1024, in)){
+        int cnt = 0; 
+        const char *p = strtok(line, ",\n\r");
+        while(p != NULL){
+            prices[days][cnt++] = atof(p);
+            p = strtok(NULL, ",\n\r");
+        }
+        if(cnt > 0){
+            days++;
+        }
+    }
+    TreeNode *root = createNode(1);
+    for(int i = 0; i < nr; i++){
+        TreeNode *curr = root;
+        addStock(curr, symbols[i]);
+        for(int j = 1; j < days; j++){
+            if(prices[j][i] >= prices[j - 1][i]){
+                if(curr->right == NULL)
+                    curr->right = createNode(j + 1);
+                curr = curr->right;
+            }
+            else{
+                if(curr->left == NULL)
+                    curr->left = createNode(j + 1);
+                curr = curr->left;
+            }
+            addStock(curr, symbols[i]);
+        }
+    }
+    //aflam oglinditul
+    int first = 1;
+    for(int i = 0; i < nr; i++){
+        TreeNode *curr = root;
+        int found = 1;
+        for(int j = 1; j < days; j++){
+            if(prices[j][i] >= prices[j - 1][i]){
+                curr = curr->left;
+            }
+            else{
+                curr = curr->right;
+            }
+            if(curr == NULL){
+                found = 0;
+                break;
+            }
+        }
+        if(found){
+            StockList *p = curr->stocks;
+            while(p != NULL){
+                int iop = getIndex(nr, symbols, p->symbol);
+                if(i < iop){
+                    if(!first)
+                        fprintf(out, "\n");
+                    fprintf(out, "%s-%s", symbols[i], p->symbol);
+                    first = 0;
+                }
+                p = p->next;
+            }
+        }
+    }
+    freeTreeNode(root);
 }

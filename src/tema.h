@@ -5,6 +5,8 @@
 #include <limits.h>
 #include <ctype.h>
 
+#define MAX_SYM 5
+
 struct Node{
     double valoare;
     double randament;
@@ -33,25 +35,44 @@ struct Q{
 
 typedef struct Q Queue;
 
-void createList(N **cap, N **q, double val);
-double average(N *cap, int n);
-double volatility(N *cap, double rmediu, int n);
-void freeList(N *cap);
+typedef struct StockList{
+    char symbol[MAX_SYM];
+    struct StockList *next;
+}StockList;
+
+typedef struct TreeNode{
+    StockList *stocks;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    int depth;
+}TreeNode;
+
+static void createList(N **cap, N **q, double val);
+static double average(N *cap, int n);
+static double volatility(N *cap, double rmediu, int n);
+static void freeList(N *cap);
 
 
-void push(S** top, double v);
-int isEmptyS(const S *top);
-double pop(S** top);
+static void push(S** top, double v);
+static int isEmptyS(const S *top);
+static double pop(S** top);
 
-Queue *createQueue();
-void enQueue(Queue *q, const char v[]);
+static Queue *createQueue();
+static void enQueue(Queue *q, const char v[]);
 
-void createString(double val1, double val2, double val3, char s[], int i, const char s3[]);
+static void createString(double val1, double val2, double val3, char s[], int i, const char s3[]);
 
 static int isEmptyQ(const Queue *q);
-void printQueue(Queue *q, FILE *out);
+static void printQueue(Queue *q, FILE *out);
 
-void deleteStack(S** top);
+static void deleteStack(S** top);
+
+static TreeNode* createNode();
+static void addStock(TreeNode *root, const char *symbol);
+static int getIndex(int nr, const char symbols[][MAX_SYM], const char *target);
+static void freeStockList(StockList *head);
+static void freeTreeNode(TreeNode *root);
 
 void rezolva_interviu1(FILE *in, FILE *out);
 void rezolva_interviu2(FILE *in, FILE *out);
+void rezolva_interviu3(FILE *in, FILE *out);

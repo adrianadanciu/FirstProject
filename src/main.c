@@ -1,6 +1,6 @@
 #include "tema.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, const char *argv[]) {
     if(argc < 3) return 1;
     FILE *in = fopen(argv[1], "r");
     FILE *out = fopen(argv[2], "w");
@@ -18,6 +18,8 @@ int main(int argc, char *argv[]) {
         rezolva_interviu1(in, out);
     else if(numar_test >= 6 && numar_test <= 10)
         rezolva_interviu2(in, out);
+    else if(numar_test >= 11 && numar_test <= 15)
+        rezolva_interviu3(in, out);
     fclose(in);
     fclose(out);
     return 0;
