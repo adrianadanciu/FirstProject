@@ -1,4 +1,7 @@
-#include "tema.h"
+#include "tema1.h"
+#include "tema2.h"
+#include "tema3.h"
+#include "tema4.h"
 
 int main(int argc, const char *argv[]) {
     if(argc < 3) return 1;
@@ -20,6 +23,8 @@ int main(int argc, const char *argv[]) {
         rezolva_interviu2(in, out);
     else if(numar_test >= 11 && numar_test <= 15)
         rezolva_interviu3(in, out);
+    else if(numar_test >= 16 && numar_test <= 20)
+        rezolva_interviu4(in, out);
     fclose(in);
     fclose(out);
     return 0;
