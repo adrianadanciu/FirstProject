@@ -51,7 +51,7 @@ static void enQueue(Queue *q, const char v[]){
 
 static void createString(double val1, double val2, double val3, char s[], int i, const char s3[]){
     char aux[20];
-    sprintf(aux, "%d", i);
+    sprintf(aux, "%d", i); //converteste i din numar in string
     strcat(s, aux);
     strcat(s, " - ");
     double dif = fabs(val3 - val1);
@@ -91,7 +91,7 @@ void rezolva_interviu2(FILE *in, FILE *out){
     int i = 0;
     Queue *q = createQueue();
     while(fgets(s, 256, in)){
-        s[strcspn(s, "\r\n")] = 0;
+        s[strcspn(s, "\r\n")] = 0; //functia fgets iti pune \n in loc de \0 ca la un sir normal
         if(isalpha(s[0])){
             i++;
             if(i == 1)

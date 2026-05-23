@@ -59,7 +59,7 @@ void rezolva_interviu3(FILE *in, FILE *out){
     char line[1024], symbols[100][MAX_SYM];
     int nr = 0, days = 0;
     double prices[500][100];
-    if(fgets(line, 1024, in)){
+    if(fgets(line, 1024, in)){ //linia cu numele actiunilor
         //fprintf(out, "%s\n", line);
         const char *p = strtok(line, ",\n\r");
         while(p != NULL){
@@ -67,11 +67,11 @@ void rezolva_interviu3(FILE *in, FILE *out){
             p = strtok(NULL, ",\n\r");
         }
     }
-    while(fgets(line, 1024, in)){
+    while(fgets(line, 1024, in)){ //liniile cu valorile
         int cnt = 0; 
         const char *p = strtok(line, ",\n\r");
         while(p != NULL){
-            prices[days][cnt++] = atof(p);
+            prices[days][cnt++] = atof(p); //de la caracter la float
             p = strtok(NULL, ",\n\r");
         }
         if(cnt > 0){
@@ -81,7 +81,7 @@ void rezolva_interviu3(FILE *in, FILE *out){
     TreeNode *root = createNode(1);
     for(int i = 0; i < nr; i++){
         TreeNode *curr = root;
-        addStock(curr, symbols[i]);
+        addStock(curr, symbols[i]); //in prima zi toate actiunile apar in root
         for(int j = 1; j < days; j++){
             if(prices[j][i] >= prices[j - 1][i]){
                 if(curr->right == NULL)
@@ -102,7 +102,7 @@ void rezolva_interviu3(FILE *in, FILE *out){
         TreeNode *curr = root;
         int found = 1;
         for(int j = 1; j < days; j++){
-            if(prices[j][i] >= prices[j - 1][i]){
+            if(prices[j][i] >= prices[j - 1][i]){ //parcurs in oglinda
                 curr = curr->left;
             }
             else{
@@ -117,7 +117,7 @@ void rezolva_interviu3(FILE *in, FILE *out){
             StockList *p = curr->stocks;
             while(p != NULL){
                 int iop = getIndex(nr, symbols, p->symbol);
-                if(i < iop){
+                if(i < iop){ //evit afisarea duplicatelor
                     if(!first)
                         fprintf(out, "\n");
                     fprintf(out, "%s-%s", symbols[i], p->symbol);

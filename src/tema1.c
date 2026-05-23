@@ -26,7 +26,7 @@ static double average(N *cap, int n){
         s += p->randament;
         p = p->next;
     }
-    return s / (n - 1);
+    return s / (n - 1); //prima valoare a randamentului este nedefinita
 }
 
 static double volatility(N *cap, double rmediu, int n){
@@ -61,7 +61,7 @@ void rezolva_interviu1(FILE *in, FILE *out){
         return;
     }
     double rmediu = average(cap, n);
-    fprintf(out, "%.3lf\n", (int)(rmediu * 1000.0) / 1000.0);
+    fprintf(out, "%.3lf\n", (int)(rmediu * 1000.0) / 1000.0); //printf ul cu afisarea celor 3 zecimale fara aceasta formula va face o rontujire
     
     double vol = volatility(cap, rmediu, n);
     fprintf(out, "%.3lf\n", (int)(vol * 1000.0) / 1000.0);
