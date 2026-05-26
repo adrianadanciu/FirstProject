@@ -1,9 +1,9 @@
 #include "tema1.h"
 
-static void createList(N **cap, N **q, double val){
+void createList(N **cap, N **q, double val){
     N *p = NULL;
     p = (N*) malloc(sizeof(N));
-    if(p == NULL){
+    if(p == NULL){ 
         return;
     }
     p->valoare = val;
@@ -19,9 +19,9 @@ static void createList(N **cap, N **q, double val){
     *q = p;
 }
 
-static double average(N *cap, int n){
+double average(N *cap, int n){
     N *p = cap->next;
-    double s = 0.0;
+    double s = 0.0; // suma tuturor randamentelor
     while(p != NULL){
         s += p->randament;
         p = p->next;
@@ -29,7 +29,7 @@ static double average(N *cap, int n){
     return s / (n - 1); //prima valoare a randamentului este nedefinita
 }
 
-static double volatility(N *cap, double rmediu, int n){
+double volatility(N *cap, double rmediu, int n){
     double svol = 0;
     N *p = cap->next;
     while(p != NULL){
@@ -39,7 +39,7 @@ static double volatility(N *cap, double rmediu, int n){
     return sqrt(svol / (n - 1));
 }
 
-static void freeList(N *cap){
+void freeList(N *cap){ 
     N *p = cap;
     while(p != NULL){
         N *temp = p;
@@ -60,14 +60,14 @@ void rezolva_interviu1(FILE *in, FILE *out){
     if(cap == NULL) {
         return;
     }
-    double rmediu = average(cap, n);
+    double rmediu = average(cap, n); //media
     fprintf(out, "%.3lf\n", (int)(rmediu * 1000.0) / 1000.0); //printf ul cu afisarea celor 3 zecimale fara aceasta formula va face o rontujire
     
-    double vol = volatility(cap, rmediu, n);
+    double vol = volatility(cap, rmediu, n); //volatilitatea
     fprintf(out, "%.3lf\n", (int)(vol * 1000.0) / 1000.0);
     
-    double ratio = rmediu / vol;
+    double ratio = rmediu / vol; //sharpe ratio
     fprintf(out, "%.3lf\n", (int)(ratio * 1000.0) / 1000.0);
 
-    freeList(cap);
+    freeList(cap);//pt a nu avea memory leak
 }

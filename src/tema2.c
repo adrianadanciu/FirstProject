@@ -49,7 +49,7 @@ static void enQueue(Queue *q, const char v[]){
         q->front = q->rear;
 }
 
-static void createString(double val1, double val2, double val3, char s[], int i, const char s3[]){
+static void createString(double val1, double val2, double val3, char s[], int i, const char s3[]){//string ul de afisare
     char aux[20];
     sprintf(aux, "%d", i); //converteste i din numar in string
     strcat(s, aux);
@@ -119,6 +119,7 @@ void rezolva_interviu2(FILE *in, FILE *out){
         i++;
         double val1 = pop(&stacktop1), val2 = pop(&stacktop2), val3 = pop(&stacktop3);
         char rasp[256] = "ziua ";
+        //cele trei cazuri in care exista oportunitate de arbitraj
         if(val1 == val2 && val1 != val3){
             createString(val1, val2, val3, rasp, i, s3);
             enQueue(q, rasp);

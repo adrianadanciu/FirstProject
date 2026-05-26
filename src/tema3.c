@@ -57,7 +57,7 @@ static void freeTreeNode(TreeNode *root){
 
 void rezolva_interviu3(FILE *in, FILE *out){
     char line[1024], symbols[100][MAX_SYM];
-    int nr = 0, days = 0;
+    int nr = 0, days = 0; //nr numarul de actiuni
     double prices[500][100];
     if(fgets(line, 1024, in)){ //linia cu numele actiunilor
         //fprintf(out, "%s\n", line);
@@ -79,6 +79,7 @@ void rezolva_interviu3(FILE *in, FILE *out){
         }
     }
     TreeNode *root = createNode(1);
+    //pentru fiecare actiune am adaugat in locul ei respectiv, in fiecare zi, adica la fiecare nivel
     for(int i = 0; i < nr; i++){
         TreeNode *curr = root;
         addStock(curr, symbols[i]); //in prima zi toate actiunile apar in root
@@ -113,6 +114,7 @@ void rezolva_interviu3(FILE *in, FILE *out){
                 break;
             }
         }
+        //daca oglindtul e gasit, se ia fiecare actiune a oglindintului si se asociaza pe rand cu actiunea curenta
         if(found){
             StockList *p = curr->stocks;
             while(p != NULL){

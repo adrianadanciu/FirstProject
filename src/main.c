@@ -2,6 +2,7 @@
 #include "tema2.h"
 #include "tema3.h"
 #include "tema4.h"
+#include "temabonus.h"
 
 int main(int argc, const char *argv[]) {
     if(argc < 3) return 1;
@@ -25,6 +26,16 @@ int main(int argc, const char *argv[]) {
         rezolva_interviu3(in, out);
     else if(numar_test >= 16 && numar_test <= 20)
         rezolva_interviu4(in, out);
+    else{
+        int count = 0;
+        const char *symbol = "AAPL"; 
+        const char *interval = "1d"; 
+        const char *range = "1mo";
+        double *prices = get_open_prices(symbol, interval, range, &count);
+        if(prices != NULL && count > 0){
+            rezolva_bonus(prices, count, out);
+        }
+    }
     fclose(in);
     fclose(out);
     return 0;
