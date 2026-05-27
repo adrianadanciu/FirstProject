@@ -86,10 +86,12 @@ static void deleteStack(S** top){
 }
 
 void rezolva_interviu2(FILE *in, FILE *out){
+    //complexitate O(n)
     S *stacktop1 = NULL, *stacktop2 = NULL, *stacktop3 = NULL;
     char s[256], s1[256] = "", s2[256] = "", s3[256] = "";
     int i = 0;
     Queue *q = createQueue();
+    //citire
     while(fgets(s, 256, in)){
         s[strcspn(s, "\r\n")] = 0; //functia fgets iti pune \n in loc de \0 ca la un sir normal
         if(isalpha(s[0])){
@@ -104,7 +106,7 @@ void rezolva_interviu2(FILE *in, FILE *out){
         else{
             double nr = atof(s);
             if(i == 1){
-                push(&stacktop1, nr);
+                push(&stacktop1, nr);//se foloseste stiva pentru a potrivi perfect varfurile
             }
             if(i == 2){
                 push(&stacktop2, nr);
@@ -114,6 +116,7 @@ void rezolva_interviu2(FILE *in, FILE *out){
             }
         }
     }
+    //calcularea cozii
     i = 0; //ziua
     while(!isEmptyS(stacktop1) && !isEmptyS(stacktop2) && !isEmptyS(stacktop3)){
         i++;
@@ -133,7 +136,9 @@ void rezolva_interviu2(FILE *in, FILE *out){
             enQueue(q, rasp);
         }
     }
+    //afisare
     printQueue(q, out);
+    //eliberarea memoriei
     deleteStack(&stacktop1);
     deleteStack(&stacktop2);
     deleteStack(&stacktop3);

@@ -2,8 +2,12 @@
 #include "tema1.h"
 
 static size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp){
+    //contents = bucata de data descarcata in acel moment de pe retea
+    //size_t pt ca este nevoie de numere poztive
     size_t realsize = size * nmemb;
+    //nmemb reprezinta number of members
     struct MemoryStruct *mem = (struct MemoryStruct *)userp;
+    //userp = user pointer
     char *ptr = realloc(mem->memory, mem->size + realsize + 1);
     if (!ptr) 
         return 0;

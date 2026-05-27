@@ -47,6 +47,8 @@ static void freeStockList(StockList *head){
 }
 
 static void freeTreeNode(TreeNode *root){
+    //stergerea are loc in postordine(SDR)
+    //daca ar fi fost in preordine, am fi pierdut pointerii catre cei doi subarbori
     if(root == NULL)
         return;
     freeTreeNode(root->left);
@@ -56,9 +58,17 @@ static void freeTreeNode(TreeNode *root){
 }
 
 void rezolva_interviu3(FILE *in, FILE *out){
+    //complexitate O(S^2 x D)
+    //S = nr de simboluri/actiune
+    //D = days/nr de zile
+    //pentru fiecare din actiune S parcurgem arborele pe adancimea D
+    //in acest for dublu mai avem si functia addStock care are S pasi
+    //optimizare: in functia addStock puteau fi adaugate noduri la inceput 
+    //in loc de final => O(S) in loc de O(S^2)
     char line[1024], symbols[100][MAX_SYM];
     int nr = 0, days = 0; //nr numarul de actiuni
     double prices[500][100];
+    //citire
     if(fgets(line, 1024, in)){ //linia cu numele actiunilor
         //fprintf(out, "%s\n", line);
         const char *p = strtok(line, ",\n\r");
@@ -78,7 +88,9 @@ void rezolva_interviu3(FILE *in, FILE *out){
             days++;
         }
     }
+    //crearea arborelui binar
     TreeNode *root = createNode(1);
+    //se foloseste arbore binar pentru a transforma traseul fiecarei actiuni intr-o cale
     //pentru fiecare actiune am adaugat in locul ei respectiv, in fiecare zi, adica la fiecare nivel
     for(int i = 0; i < nr; i++){
         TreeNode *curr = root;
@@ -97,7 +109,7 @@ void rezolva_interviu3(FILE *in, FILE *out){
             addStock(curr, symbols[i]);
         }
     }
-    //aflam oglinditul
+    //aflarea oglinditului
     int first = 1;
     for(int i = 0; i < nr; i++){
         TreeNode *curr = root;
@@ -114,6 +126,7 @@ void rezolva_interviu3(FILE *in, FILE *out){
                 break;
             }
         }
+        //afisare
         //daca oglindtul e gasit, se ia fiecare actiune a oglindintului si se asociaza pe rand cu actiunea curenta
         if(found){
             StockList *p = curr->stocks;
@@ -129,5 +142,6 @@ void rezolva_interviu3(FILE *in, FILE *out){
             }
         }
     }
+    //eliberarea memoriei
     freeTreeNode(root);
 }
